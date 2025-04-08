@@ -26,6 +26,7 @@ plan = st.selectbox(
         "📙 Tax-Sensitive Defensive Plan",
         "📗 Re-entry Plan"
     ]
+    ]
 )
 
 # --- Refresh Macro Data ---
