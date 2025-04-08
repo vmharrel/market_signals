@@ -9,12 +9,12 @@ from fredapi import Fred
 from dotenv import load_dotenv
 import streamlit.components.v1 as components
 
-# --- Load environment variables ---
+# --- Load environment variable for FRED API ---
 load_dotenv()
-FRED_API_KEY = st.secrets.get("FRED_API_KEY", os.getenv("FRED_API_KEY"))
+FRED_API_KEY = os.getenv("FRED_API_KEY")
 fred = Fred(api_key=FRED_API_KEY)
 
-st.set_page_config(page_title="📊 Market Signals Strategy Dashboard", layout="wide")
+st.set_page_config(page_title="📊 Market Signals Suite", layout="wide")
 st.title("📊 Harrell Family Strategic Signal Monitor")
 
 # --- Plan Selection ---
@@ -36,22 +36,6 @@ if plan == "📑 Portfolio Enhancement Actions per Strategy":
         html_content = f.read()
     components.html(html_content, height=900, scrolling=True)
     st.stop()
-
-
-import streamlit as st
-import yfinance as yf
-import pandas as pd
-from datetime import datetime
-from fredapi import Fred
-import os
-from dotenv import load_dotenv
-
-# --- Load environment variable for FRED API ---
-load_dotenv()
-FRED_API_KEY = os.getenv("FRED_API_KEY")
-fred = Fred(api_key=FRED_API_KEY)
-
-st.set_page_config(page_title="📊 Market Signals Suite", layout="wide")
 
 # --- Sidebar: Refresh Macro Data ---
 st.sidebar.title("📡 Macroeconomic Data")
