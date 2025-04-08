@@ -20,11 +20,9 @@ plan = st.selectbox(
     "Select Strategic Plan to Monitor:",
     [
         "📊 Market Dashboard",
-    [
         "📘 2025 Market Dynamics Plan",
         "📙 Tax-Sensitive Defensive Plan",
         "📗 Re-entry Plan"
-    ]
     ]
 )
 
