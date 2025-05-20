@@ -1,1 +1,7 @@
 name: Streamlit Auto-Deploy
+
+on:
+  push:
+    branches:
+      - main
+
