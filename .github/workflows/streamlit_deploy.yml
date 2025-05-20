@@ -5,3 +5,24 @@ on:
     branches:
       - main
 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install streamlit
+
+      - name: Validate dashboard runs
+        run: |
+          streamlit run market_signals_dashboard.py --server.headless true &
+          sleep 10
+          pkill streamlit
