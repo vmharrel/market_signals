@@ -4,3 +4,21 @@ on:
   schedule:
     - cron: '0 12 * * 1'  # Every Monday at 12:00 UTC
   workflow_dispatch:
+
+jobs:
+  email-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install yfinance pandas python-dotenv fredapi
+
+      - name: Send Weekly Signal Email
+        run: python weekly_report.py
