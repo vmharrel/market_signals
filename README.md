@@ -1,78 +1,78 @@
 # 📊 Harrell Family Market Signals Dashboard
 
-This unified Streamlit dashboard tracks all key signals outlined in the **2025 Market Dynamics Plan**, **Tax-Sensitive Defensive Plan**, and **Re-entry Plan** — all in one streamlined interface.
+A unified Streamlit dashboard for monitoring macroeconomic and portfolio-specific signals across nine strategic plans.
 
 ---
 
-## 🚀 Features
+## 🧭 Included Strategic Plans
 
-- ✅ **Plan Selector**: Toggle between the 3 strategic plans in one dashboard
-- 🧠 **Built-in Macroeconomic Signals**:
-  - VIX, S&P 500 200-Day MA, Yield Curve
-  - CPI (YoY Inflation)
-  - High-Yield OAS (credit spreads)
-  - Real GDP and Leading Economic Index (LEI)
-- 🔁 **On-demand FRED data refresh**
-- 🧭 **Clear plan-specific actions embedded into each signal**
-
----
-
-## 🗺 Strategic Plan Modes
-
-| Plan | Signals Tracked | Action Triggers |
-|------|------------------|-----------------|
-| 📘 2025 Market Dynamics Plan | VIX > 20, S&P < 200MA, Inverted Curve, CPI > 4%, OAS > 500bps | Begin rotating to real assets, floating-rate, short-duration bonds |
-| 📙 Tax-Sensitive Defensive Plan | VIX > 25, LEI < 101, GDP < 0, >10% S&P drop | Tax-loss harvesting, rebalance IRAs, shift to short ETFs |
-| 📗 Re-entry Plan | VIX < 18, S&P above MA, Yield Curve normalized, CPI < 3.5% | Phased or full re-entry into core allocation |
+| Plan                              | Purpose                                                                 |
+|-----------------------------------|-------------------------------------------------------------------------|
+| 📑 Portfolio Enhancement Actions  | Reference guide with tactical portfolio actions by strategy             |
+| 📊 Market Dashboard               | Combined signal table with visual strategy mapping                      |
+| 📘 2025 Market Dynamics Plan      | Stagflation defense, CPI, VIX, 10Y yield, credit spreads                |
+| 📙 Tax-Sensitive Defensive Plan   | Downshift after market breakdowns; tax harvesting and short duration    |
+| 📗 Re-entry Plan                  | Phased return when conditions normalize (VIX, trend, CPI)               |
+| 🇺🇸 U.S.A. Debt Crisis Plan        | Defend against Treasury selloff, USD drop, CDS widening                 |
+| 🇨🇳 China Treasury Selloff Monitor| Monitor China’s divestment from Treasuries and USD weakening            |
+| 🌍 Trade Regime Shift Tracker     | Tariffs, EM divergence, commodity trends, supply chain fragmentation    |
+| 📐 50/30/20 Plan                  | Compares actual vs target allocation using uploadable CSV               |
 
 ---
 
-## 📦 Installation
+## 📥 Upload Format for 50/30/20 Plan
+
+Use this CSV format to compare your current allocation vs the 50/30/20 target:
+
+```csv
+Asset Class,Amount
+Stocks,500000
+Bonds,300000
+Private,100000
+```
+
+---
+
+## 🧪 Run Locally
 
 ```bash
-git clone https://github.com/vmharrel/market_signals.git
-cd market_signals
 pip install -r requirements.txt
 streamlit run market_signals_dashboard.py
 ```
 
 ---
 
-## 🧪 Run Locally or Deploy
+## 🚀 Deploy to Streamlit Cloud
 
-Use [Streamlit Cloud](https://streamlit.io/cloud) and set the main file path to:
+1. Set main file: `market_signals_dashboard.py`
+2. Upload `portfolio_enhancement_actions.html`
+3. Add secrets:
 
-```
-market_signals_dashboard.py
+```toml
+FRED_API_KEY = "your_fred_api_key"
+EMAIL_ADDRESS = "your_email@gmail.com"
+EMAIL_PASSWORD = "your_app_password"
+TO_EMAIL = "recipient@example.com"
 ```
 
-Add this to your **Streamlit Secrets**:
-```env
-FRED_API_KEY=your_fred_api_key
-```
+---
+
+## 🔁 GitHub Actions Workflows
+
+### ✅ `.github/workflows/streamlit_deploy.yml`
+- Deploys dashboard on every push to `main`
+- Validates that it launches correctly in headless mode
+
+### ✅ `.github/workflows/weekly_signal_report.yml`
+- Sends a plain-text email report of all signal statuses every **Monday**
+- Uses `weekly_report.py` to scan VIX, CPI, OAS, GDP, LEI, 10Y, DXY, CDS
 
 ---
 
 ## 🗂 Legacy Dashboards
 
-Legacy one-off dashboards and CLI scripts are archived under:
-```
-/legacy/
-```
-
-These include older versions like:
-- `reentry_monitor.py`
-- `stagflation_signal_dashboard.py`
+Archived legacy files from earlier versions are stored in `/legacy/`
 
 ---
 
-## 🔁 GitHub Actions Deployment
-
-A GitHub Actions workflow is included that:
-- Triggers on `dev → main` merges
-- Installs dependencies
-- Validates the Streamlit app
-
----
-
-© 2025 | Harrell Family Market Signal Strategy
+© 2025 | Harrell Family Financial Monitor | All rights reserved
