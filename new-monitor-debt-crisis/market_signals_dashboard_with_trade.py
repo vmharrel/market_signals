@@ -28,8 +28,7 @@ plan = st.selectbox(
         "📗 Re-entry Plan",
         "🇺🇸 U.S.A. Debt Crisis Plan",
         "🇨🇳 China Treasury Selloff Monitor",
-        "🌍 Trade Regime Shift Tracker",
-        "📐 50/30/20 Plan"
+        "🌍 Trade Regime Shift Tracker"
     ]
 )
 
@@ -44,8 +43,7 @@ if plan == "📑 Portfolio Enhancement Actions per Strategy":
 
 
 elif plan == "🇨🇳 China Treasury Selloff Monitor",
-        "🌍 Trade Regime Shift Tracker",
-        "📐 50/30/20 Plan":
+        "🌍 Trade Regime Shift Tracker":
     st.subheader("🇨🇳 China Treasury Selloff Monitor – Global Treasury Confidence Risk")
 
     col1, col2, col3 = st.columns(3)
@@ -76,8 +74,7 @@ elif plan == "🇨🇳 China Treasury Selloff Monitor",
 
 
 
-elif plan == "🌍 Trade Regime Shift Tracker",
-        "📐 50/30/20 Plan":
+elif plan == "🌍 Trade Regime Shift Tracker":
     st.subheader("🌍 Trade Regime Shift Tracker – Reshoring & Global Supply Chain Pressure")
 
     col1, col2, col3 = st.columns(3)
@@ -115,51 +112,3 @@ elif plan == "🌍 Trade Regime Shift Tracker",
             st.warning("⚠️ Commodity strength → Add PDBC, DBC, GSG, industrials")
     else:
         st.warning("⚠️ Commodity ETF data unavailable")
-
-
-
-elif plan == "📐 50/30/20 Plan":
-    st.subheader("📐 50/30/20 Plan – Allocation Alignment Monitor")
-
-    st.markdown("Upload a CSV with your current portfolio allocation. The format should look like:")
-
-    st.code("Asset Class,Amount\nStocks,500000\nBonds,300000\nPrivate,100000", language="csv")
-
-    uploaded_csv = st.file_uploader("Upload your current portfolio allocation CSV", type=["csv"])
-
-    if uploaded_csv:
-        df = pd.read_csv(uploaded_csv)
-        df["Amount"] = pd.to_numeric(df["Amount"], errors="coerce")
-        df.dropna(inplace=True)
-        total = df["Amount"].sum()
-        df["% Allocation"] = df["Amount"] / total * 100
-
-        target_alloc = {
-            "Stocks": 50,
-            "Bonds": 30,
-            "Private": 20
-        }
-
-        df["Target %"] = df["Asset Class"].map(target_alloc)
-        df["Difference"] = df["% Allocation"] - df["Target %"]
-        df["Status"] = df["Difference"].apply(lambda x: "✅ OK" if abs(x) <= 5 else "⚠️ Off Target")
-
-        st.dataframe(df, use_container_width=True)
-
-        chart = alt.Chart(df).transform_fold(
-            ["% Allocation", "Target %"]
-        ).mark_bar().encode(
-            x=alt.X("key:N", title="Category"),
-            y=alt.Y("value:Q", title="Percentage"),
-            color=alt.Color("key:N", scale=alt.Scale(domain=["% Allocation", "Target %"], range=["#1f77b4", "#ff7f0e"]))
-        ).properties(width="container", height=300)
-
-        st.altair_chart(chart, use_container_width=True)
-
-        if any(df["Status"] == "⚠️ Off Target"):
-            st.warning("⚠️ Some allocations deviate by more than ±5% from the 50/30/20 target.")
-        else:
-            st.success("✅ Your current allocation is within 5% of each target bucket.")
-
-    else:
-        st.info("Please upload a CSV to evaluate your current allocation against the 50/30/20 target.")
