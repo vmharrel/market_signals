@@ -1,1 +1,6 @@
-name: Weekly Signal Report
+name: Weekly Signal Report Email
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'  # Every Monday at 12:00 UTC
+  workflow_dispatch:
