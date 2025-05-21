@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 import streamlit.components.v1 as components
 import yfinance as yf
@@ -6,14 +5,11 @@ import pandas as pd
 import altair as alt
 from datetime import datetime
 from fredapi import Fred
-from dotenv import load_dotenv
 
-# --- Load environment variables ---
-load_dotenv()
-FRED_API_KEY = st.secrets.get("FRED_API_KEY", os.getenv("FRED_API_KEY"))
-
+# --- Load FRED API key from Streamlit secrets only ---
+FRED_API_KEY = st.secrets.get("FRED_API_KEY")
 if not FRED_API_KEY:
-    st.error("❌ Missing FRED API key. Please add FRED_API_KEY to Streamlit secrets.")
+    st.error("❌ Missing FRED_API_KEY in Streamlit secrets.")
     st.stop()
 
 fred = Fred(api_key=FRED_API_KEY)
@@ -37,6 +33,5 @@ plan = st.selectbox(
     ]
 )
 
-# Minimal rendering logic to verify UI is active
-st.success(f"✅ Loaded: {plan}")
-st.info("Your full dashboard logic will render here based on the selected plan.")
+st.success(f"✅ Selected: {plan}")
+st.info("🚧 Placeholder: full signal logic loads below based on plan selection.")
