@@ -1,4 +1,2 @@
-# Create: .streamlit/config.toml
 [server]
 enableStaticServing = true
-
