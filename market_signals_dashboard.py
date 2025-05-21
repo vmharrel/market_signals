@@ -11,6 +11,11 @@ from dotenv import load_dotenv
 # --- Load environment variables ---
 load_dotenv()
 FRED_API_KEY = st.secrets.get("FRED_API_KEY", os.getenv("FRED_API_KEY"))
+
+if not FRED_API_KEY:
+    st.error("❌ Missing FRED API key. Please add FRED_API_KEY to Streamlit secrets.")
+    st.stop()
+
 fred = Fred(api_key=FRED_API_KEY)
 
 st.set_page_config(page_title="📊 Market Signals Strategy Dashboard", layout="wide")
@@ -32,7 +37,6 @@ plan = st.selectbox(
     ]
 )
 
-# Fallback rendering to test UI
-if plan:
-    st.success(f"You selected: {plan}")
-    st.info("Your full dashboard logic should run here for this strategy.")
+# Minimal rendering logic to verify UI is active
+st.success(f"✅ Loaded: {plan}")
+st.info("Your full dashboard logic will render here based on the selected plan.")
