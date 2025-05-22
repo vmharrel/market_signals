@@ -1,23 +1,31 @@
 import streamlit as st
-import streamlit.components.v1 as components
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
 import altair as alt
-from datetime import datetime
+import streamlit.components.v1 as components
 from fredapi import Fred
 
-# --- Securely load FRED API key ---
-FRED_API_KEY = st.secrets.get("FRED_API_KEY")
-if not FRED_API_KEY:
-    st.error("❌ Missing FRED_API_KEY in Streamlit secrets.")
-    st.stop()
-
-fred = Fred(api_key=FRED_API_KEY)
+from strategies import (
+    plan_2025_dynamics,
+    plan_tax_defensive,
+    plan_reentry,
+    plan_debt_crisis,
+    plan_china_selloff,
+    plan_trade_shift,
+    plan_50_30_20,
+    market_dashboard,
+    enhancement_actions
+)
 
 st.set_page_config(page_title="📊 Market Signals Dashboard", layout="wide")
 st.title("📊 Harrell Family Strategic Signal Monitor")
 
-# --- Plan Selector ---
+FRED_API_KEY = st.secrets.get("FRED_API_KEY")
+if not FRED_API_KEY:
+    st.error("❌ Missing FRED_API_KEY in Streamlit secrets.")
+    st.stop()
+fred = Fred(api_key=FRED_API_KEY)
+
 plan = st.selectbox(
     "Select Strategic Plan to Monitor:",
     [
@@ -33,47 +41,21 @@ plan = st.selectbox(
     ]
 )
 
-# --- Signal & Metric Calculators ---
-def get_price(ticker, period='6mo'):
-    try:
-        return yf.download(ticker, period=period)['Close']
-    except:
-        return pd.Series()
-
-def get_vix():
-    return get_price("^VIX", period="5d").iloc[-1]
-
-def get_sp500_vs_ma():
-    data = get_price("^GSPC", period="1y")
-    current = data.iloc[-1]
-    ma_200 = data.rolling(200).mean().dropna().iloc[-1]
-    return current, ma_200
-
-def get_yield_curve():
-    t10 = get_price("^TNX", period="5d").iloc[-1] / 100
-    t3m = get_price("^IRX", period="5d").iloc[-1] / 100
-    return t10, t3m
-
-def fetch_fred_series(series_id, frequency="m"):
-    try:
-        data = fred.get_series(series_id)
-        df = data.to_frame(name="value").reset_index()
-        df.columns = ["Date", "Value"]
-        df = df.sort_values("Date")
-        if frequency == "q":
-            df = df[df["Date"].dt.month.isin([3, 6, 9, 12])]
-        return df.iloc[-1]["Value"]
-    except:
-        return None
-
-# Fetch common metrics
-vix = get_vix()
-sp_price, sp_ma = get_sp500_vs_ma()
-t10, t3m = get_yield_curve()
-cpi = fetch_fred_series("CPIAUCSL")
-oas = fetch_fred_series("BAMLH0A0HYM2")
-gdp = fetch_fred_series("GDP", frequency="q")
-lei = fetch_fred_series("USSLIND")
-
-# Info bar to confirm logic is loaded
-st.info("✅ Dashboard logic is initialized. Insert each plan-specific view below this point.")
+if plan == "📑 Portfolio Enhancement Actions per Strategy":
+    enhancement_actions.render()
+elif plan == "📊 Market Dashboard":
+    market_dashboard.render()
+elif plan == "📘 2025 Market Dynamics Plan":
+    plan_2025_dynamics.render()
+elif plan == "📙 Tax-Sensitive Defensive Plan":
+    plan_tax_defensive.render()
+elif plan == "📗 Re-entry Plan":
+    plan_reentry.render()
+elif plan == "🇺🇸 U.S.A. Debt Crisis Plan":
+    plan_debt_crisis.render()
+elif plan == "🇨🇳 China Treasury Selloff Monitor":
+    plan_china_selloff.render()
+elif plan == "🌍 Trade Regime Shift Tracker":
+    plan_trade_shift.render()
+elif plan == "📐 50/30/20 Plan":
+    plan_50_30_20.render()
